@@ -8,8 +8,11 @@
 
 dir=~/dotfiles                    # dotfiles directory
 olddir=~/dotfiles_old             # old dotfiles backup directory
-files="tmux.conf bashrc vimrc vim zshrc oh-my-zsh"    # list of files/folders to symlink in homedir
+# list of files/folders to symlink in homedir
+files="tmux.conf bashrc vimrc zshrc"
+# vim  oh-my-zsh
 
+# git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
 ##########
 
 # create dotfiles_old in homedir
