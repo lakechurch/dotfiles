@@ -6,10 +6,10 @@
 
 ########## Variables
 
-dir=~/dotfiles                    # dotfiles directory
-olddir=~/dotfiles_old             # old dotfiles backup directory
+dir=~/workspace/dotfiles                    # dotfiles directory
+olddir=~/workspace/dotfiles_old             # old dotfiles backup directory
 # list of files/folders to symlink in homedir
-files="tmux.conf bashrc vimrc zshrc"
+files="tmux.conf bashrc vimrc"  #  zshrc"
 # vim  oh-my-zsh
 
 # git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
