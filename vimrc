@@ -4,15 +4,22 @@ colorscheme badwolf
 
 " Plugins
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-" let Vundle manage Vundle, required
-Plugin 'VundleVim/Vundle.vim'
+set nocompatible
+filetype off
+
+set rtp+=~/workspace/dotfiles/vim/bundle/Vundle.vim
 call vundle#begin()
 
+" let Vundle manage Vundle, required
+Plugin 'VundleVim/Vundle.vim'
 
+" clang_complete autocomplete
+Plugin 'rip-rip/clang_complete'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
+
+
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
 "filetype plugin on
@@ -26,15 +33,18 @@ filetype plugin indent on    " required
 " see :h vundle for more details or wiki for FAQ
 " Put your non-Plugin stuff after this line
 
+" path to directory where library can be found
+let g:clang_library_path='/usr/lib/llvm-11/lib/libclang.so.1'
+
 " Misc
 set ttyfast                     " faster redraw
 set backspace=indent,eol,start
 
 " Spaces & Tabs
-set tabstop=4           " 4 space tab
+set tabstop=2           " 4 space tab
 set expandtab           " use spaces for tabs
-set softtabstop=4       " 4 space tab
-set shiftwidth=4
+set softtabstop=2       " 4 space tab
+set shiftwidth=2
 set modelines=1
 filetype indent on
 filetype plugin on
