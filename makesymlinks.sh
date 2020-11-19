@@ -1,22 +1,20 @@
 #!/bin/bash
 ############################
 # .make.sh
-# This script creates symlinks from the home directory to any desired dotfiles in ~/dotfiles
+# This script creates symlinks from the home directory to any desired dotfiles in ~/workspace/dotfiles
 ############################
 
 ########## Variables
-
 dir=~/workspace/dotfiles                    # dotfiles directory
 olddir=~/workspace/dotfiles_old             # old dotfiles backup directory
-# list of files/folders to symlink in homedir
-files="tmux.conf bashrc vimrc"  #  zshrc"
-# vim  oh-my-zsh
 
-# git clone https://github.com/VundleVim/Vundle.vim.git ~/.vim/bundle/Vundle.vim
+# list of files/folders to symlink in homedir
+files="tmux.conf bash_profile bashrc vimrc gitconfig"  #  zshrc"
 ##########
 
-# create dotfiles_old in homedir
-echo "Creating $olddir for backup of any existing dotfiles in ~"
+########## Symlinks for dotfiles
+# create backup in dotfiles_old in workspace
+echo "Creating $olddir for backup of any existing dotfiles in ~/workspace"
 mkdir -p $olddir
 echo "...done"
 

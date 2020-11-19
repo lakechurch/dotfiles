@@ -39,11 +39,12 @@ let g:clang_library_path='/usr/lib/llvm-11/lib/libclang.so.1'
 " Misc
 set ttyfast                     " faster redraw
 set backspace=indent,eol,start
+set clipboard=unnamedplus
 
 " Spaces & Tabs
-set tabstop=2           " 4 space tab
+set tabstop=2           " 2 space tab
 set expandtab           " use spaces for tabs
-set softtabstop=2       " 4 space tab
+set softtabstop=2       " 2 space tab
 set shiftwidth=2
 set modelines=1
 filetype indent on
@@ -74,10 +75,12 @@ set foldlevelstart=10    " start with fold level of 1
 " Line Shortcuts {{{
 nnoremap j gj
 nnoremap k gk
-nnoremap B ^
-nnoremap E $
-nnoremap $ <nop>
-nnoremap ^ <nop>
+
+" nnoremap B ^
+" nnoremap E $
+" nnoremap $ <nop>
+" nnoremap ^ <nop>
+
 nnoremap gV `[v`]
 onoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>
 xnoremap an :<c-u>call <SID>NextTextObject('a', 'f')<cr>
@@ -112,3 +115,4 @@ vmap v <Plug>(expand_region_expand)
 vmap <C-v> <Plug>(expand_region_shrink)
 inoremap jk <esc>
 
+command W :execute ':silent w !sudo tee % > /dev/null' | :if v:shell_error | :edit! | :endif
