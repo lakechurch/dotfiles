@@ -19,7 +19,8 @@
 
     # Feature improving aliases
     st = status -sb
-    a = add -p
+    a = add
+    al = add -A
 
     # Commits 
     cm = commit -m
