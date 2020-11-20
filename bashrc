@@ -141,3 +141,5 @@ fi
 # Ubuntu already had an "fd" package, so the one I'd like to use is called "fdfind".
 # alias fd=fdfind
 
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
