@@ -116,10 +116,12 @@ which ag >/dev/null || alias ag="grep -rn"
 
 # Provide a yq command to use jq with YAML files
 # alias yq="python3 -c 'import sys, yaml, json; json.dump(yaml.load(sys.stdin), sys.stdout, indent=4)' | jq"
+alias python=python3
 
 # A really simple password generator
 alias pw='bash -c '"'"'echo `tr -dc $([ $# -gt 1 ] && echo $2 || echo "A-Za-z0-9") < /dev/urandom | head -c $([ $# -gt 0 ] && echo $1 || echo 30)`'"'"' --'
 
+alias v=vim
 ###########################
 ## Ubuntu-specific stuff ##
 ###########################
