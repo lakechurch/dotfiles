@@ -121,6 +121,11 @@ alias python=python3
 # A really simple password generator
 alias pw='bash -c '"'"'echo `tr -dc $([ $# -gt 1 ] && echo $2 || echo "A-Za-z0-9") < /dev/urandom | head -c $([ $# -gt 0 ] && echo $1 || echo 30)`'"'"' --'
 
+alias vim="nvim"
+alias vi="nvim"
+alias oldvim="vim"
+alias vimdiff='nvim -d'
+export EDITOR=nvim
 alias v=vim
 ###########################
 ## Ubuntu-specific stuff ##
