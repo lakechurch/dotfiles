@@ -110,6 +110,7 @@ export PATH="$HOME/.local/bin:$PATH"
 ## Other helpful aliases ##
 ###########################
 
+# To install ag -> https://github.com/ggreer/the_silver_searcher#linux
 # If ag is not installed, alias it to "grep -rn" (and generally force color for grep)
 alias grep="grep --color=always"
 which ag >/dev/null || alias ag="grep -rn"
