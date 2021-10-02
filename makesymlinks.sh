@@ -5,11 +5,11 @@
 ############################
 
 ########## Variables
-dir=~/workspace/dotfiles                    # dotfiles directory
-olddir=~/workspace/dotfiles_old             # old dotfiles backup directory
+dir=$HOME/workspace/dotfiles                    # dotfiles directory
+olddir=$HOME/workspace/dotfiles_old             # old dotfiles backup directory
 
 # list of files/folders to symlink in homedir
-files="tmux.conf bash_profile bashrc vimrc gitconfig"  #  zshrc"
+files="tmux.conf bash_profile bashrc vim vimrc gitconfig zshrc aliases oh-my-zsh"
 ##########
 
 ########## Symlinks for dotfiles
@@ -26,7 +26,7 @@ echo "...done"
 # move any existing dotfiles in homedir to dotfiles_old directory, then create symlinks 
 for file in $files; do
     echo "Moving any existing dotfiles from ~ to $olddir"
-    mv ~/.$file ~/dotfiles_old/
+    mv $HOME/.$file $HOME/dotfiles_old/
     echo "Creating symlink to $file in home directory."
-    ln -s $dir/$file ~/.$file
+    ln -s $dir/$file $HOME/.$file
 done

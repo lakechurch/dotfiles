@@ -4,6 +4,13 @@ case $- in
       *) return;;
 esac
 
+#############
+## Aliases ##
+#############
+if [ -f ~/.aliases ]; then
+    . ~/.aliases
+fi
+
 ###########
 ## Color ##
 ###########
@@ -17,21 +24,6 @@ export PS1='\[\e[1;38;5;244m\]\t \[\e[1;36m\]\u@\H \[\e[1;33m\]\w \[\e[1;36m\]\$
 # Minimal without path to working directory (~ $)
 # export PS1='\[\e[1;33m\]\W \[\e[1;36m\]\$ \[\e[0m\]'
 
-##################################
-## ls, exa & more colored stuff ##
-##################################
-
-if which exa >/dev/null; then
-	# exa is a modern ls replacement with Git integration: https://the.exa.website
-	alias ls="exa --git-ignore"
-	alias ll="exa --git-ignore --git -l --group"
-	alias la="exa --git -la"
-else
-	alias ls="ls --color=always"
-	alias ll="ls -l"
-	alias la="ls -lA"
-fi
-for alias in lsl sls lsls sl l s; do alias $alias=ls; done
 
 # colored GCC warnings and errors
 export GCC_COLORS='error=01;31:warning=01;35:note=01;36:caret=01;32:locus=01:quote=01'
@@ -107,47 +99,25 @@ export PATH="$HOME/.local/bin:$PATH"
 # transfer() { if [ $# -eq 0 ]; then echo -e "No arguments specified. Usage:\necho transfer /tmp/test.md\ncat /tmp/test.md | transfer test.md"; return 1; fi; tmpfile=$( mktemp -t transferXXX ); if tty -s; then basefile=$(basename "$1" | sed -e 's/[^a-zA-Z0-9._-]/-/g'); curl --progress-bar --upload-file "$1" "https://transfer.sh/$basefile" >> $tmpfile; else curl --progress-bar --upload-file "-" "https://transfer.sh/$1" >> $tmpfile ; fi; cat $tmpfile; rm -f $tmpfile; }
 
 ###########################
-## Other helpful aliases ##
-###########################
-
-# To install ag -> https://github.com/ggreer/the_silver_searcher#linux
-# If ag is not installed, alias it to "grep -rn" (and generally force color for grep)
-alias grep="grep --color=always"
-which ag >/dev/null || alias ag="grep -rn"
-
-# Provide a yq command to use jq with YAML files
-# alias yq="python3 -c 'import sys, yaml, json; json.dump(yaml.load(sys.stdin), sys.stdout, indent=4)' | jq"
-alias python=python3
-
-# A really simple password generator
-alias pw='bash -c '"'"'echo `tr -dc $([ $# -gt 1 ] && echo $2 || echo "A-Za-z0-9") < /dev/urandom | head -c $([ $# -gt 0 ] && echo $1 || echo 30)`'"'"' --'
-
-alias vim="nvim"
-alias vi="nvim"
-alias oldvim="vim"
-alias vimdiff='nvim -d'
-export EDITOR=nvim
-alias v=vim
-###########################
 ## Ubuntu-specific stuff ##
 ###########################
+if grep -q ID=ubuntu "/etc/os-release"; then
+  # make less more friendly for non-text input files, see lesspipe(1)
+  # [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# make less more friendly for non-text input files, see lesspipe(1)
-# [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if ! shopt -oq posix; then
-  if [ -f /usr/share/bash-completion/bash_completion ]; then
-    . /usr/share/bash-completion/bash_completion
-  elif [ -f /etc/bash_completion ]; then
-    . /etc/bash_completion
+  # enable programmable completion features (you don't need to enable
+  # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+  # sources /etc/bash.bashrc).
+  if ! shopt -oq posix; then
+    if [ -f /usr/share/bash-completion/bash_completion ]; then
+      . /usr/share/bash-completion/bash_completion
+    elif [ -f /etc/bash_completion ]; then
+      . /etc/bash_completion
+    fi
   fi
+
+  # Ubuntu already had an "fd" package, so the one I'd like to use is called "fdfind".
+  # alias fd=fdfind
 fi
-
-# Ubuntu already had an "fd" package, so the one I'd like to use is called "fdfind".
-# alias fd=fdfind
-
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash

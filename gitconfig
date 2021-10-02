@@ -1,5 +1,6 @@
 [core]
-    editor = /usr/bin/vim
+    editor = /usr/bin/nvim
+[url "ssh://git@github.com/"]
 
 [user]
     email = curtis@meerkerk.ca

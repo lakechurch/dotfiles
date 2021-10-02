@@ -5,7 +5,7 @@ export ZSH=$HOME/.oh-my-zsh
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="babun"
+ZSH_THEME="kafeitu" # defualt robbyrussell
 
 # Uncomment the following line to use case-sensitive completion.
 # CASE_SENSITIVE="true"
@@ -49,7 +49,7 @@ ZSH_THEME="babun"
 # Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git)
+plugins=(git fzf k zsh-syntax-highlighting zsh-autosuggestions)
 
 # User configuration
 
@@ -82,3 +82,8 @@ source $ZSH/oh-my-zsh.sh
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+source  ~/powerlevel9k/powerlevel9k.zsh-theme
+
+source $HOME/.aliases
+
+bindkey '^ ' autosuggest-accept
