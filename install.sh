@@ -1,4 +1,14 @@
+#!/bin/bash
+
 # Install needed apps
+# Rust, rustup, and cargo
+curl https://sh.rustup.rs -sSf | sh  
+pip3 install black
+pip3 install flake8
+pip3 install isort
+pip3 install codespell
+npm install -g prettier
+
 
 ## First determine Linux OS
 if grep -q ID=ubuntu "/etc/os-release"; then
@@ -7,13 +17,8 @@ if grep -q ID=ubuntu "/etc/os-release"; then
   bash -c "$(wget -O - https://apt.llvm.org/llvm.sh)"
   ##########
 
-  ########## Plug.vim
-  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  ##########
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-
   apt install nodejs
+  sudo apt install shellcheck
 
   ########## Install zsh
   sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -21,18 +26,12 @@ fi
 if grep -q ID=arch "/etc/os-release"; then
   sudo pacman -S exa --needed --noconfirm
   sudo pacman -S llvm --needed --noconfirm
-  ########## Plug.vim
-  sh -c 'curl -fLo "${XDG_DATA_HOME:-$HOME/.local/share}"/nvim/site/autoload/plug.vim --create-dirs \
-         https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
-  ##########
-  curl -fLo ~/.vim/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  sudo pacman -S shellcheck
+  sudo pacman -S lib32-glibc
+  sudo pacman -S ripgrep
 
-
-  ########## Install zsh
-  sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
-fi
 
 ########## Git Submodule(s)
-echo "Initializing submodules"
-git submodule update --init --recursive
+#echo "Initializing submodules"
+#git submodule update --init --recursive
 ##########

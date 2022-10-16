@@ -1,13 +1,3 @@
-# swap
-[._]*.s[a-w][a-z]
-[._]s[a-w][a-z]
-# session
-Session.vim
-# temporary
-.netrwhist
-*~
-# auto-generated tag files
-tags
 
-# Use submodule Vundle to manage plugins
-vim/bundle/*
+scripts/.local/bin/rust-analyzer
+scripts/.local/bin
