@@ -1,0 +1,58 @@
+[user]
+	name = Curtis Meerkerk
+	email = curtis.meerkerk@generac.com
+[core]
+	editor = nvim
+[init]
+	defaultBranch = main
+[url "ssh://git@github.com/"]
+
+[safe]
+  directory = *
+
+[alias]
+    # Shortening aliases
+    co = checkout
+    cob = checkout -b
+    f = fetch -p
+    c = commit
+    pu = push
+    pl = pull
+    ba = branch -a
+    bd = branch -d
+    bD = branch -D
+    dc = diff --cached
+
+    # Feature improving aliases
+    st = status -sb
+    a = add
+    al = add -A
+
+    # Commits 
+    cm = commit -m
+    cma = commit -a -m
+    ca = commit --amend
+    amend = commit --amend
+    caa = commit -a --amend -C HEAD
+
+    # diff
+    d = diff --word-diff
+    dc = diff --cached
+    # diff last commit
+    dlc = diff --cached HEAD^
+    dr  = "!f() { git diff -w "$1"^.."$1"; }; f"
+    diffr  = "!f() { git diff "$1"^.."$1"; }; f"
+
+    # reset commands
+    r1 = reset HEAD^
+    r2 = reset HEAD^^
+    rh = reset --hard
+    rh1 = reset HEAD^ --hard
+    rh2 = reset HEAD^^ --hard
+
+    # Complex aliases
+    plog = log --graph --pretty='format:%C(red)%d%C(reset) %C(yellow)%h%C(reset) %ar %C(green)%aN%C(reset) %s'
+    tlog = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
+    lg = log --color --graph --pretty=format:'%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit
+    rank = shortlog -sn --no-merges
+    bdm = "!git branch --merged | grep -v '*' | xargs -n 1 git branch -d"
