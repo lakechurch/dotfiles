@@ -35,6 +35,7 @@ autoload -Uz colors && colors
 
 # Useful Functions
 source "$ZDOTDIR/zsh-functions"
+source <(curl -sL init.zshell.dev); zzinit
 
 # Normal files to source
 zsh_add_file "zsh-exports"
@@ -53,10 +54,10 @@ zsh_add_plugin "MichaelAquilina/zsh-you-should-use"
 
 # Key-bindings
 bindkey -s '^o' 'ranger^M'
-bindkey -s '^f' 'zi^M'
+# bindkey -s '^g' 'zi^M'
 bindkey -s '^s' 'ncdu^M'
-# bindkey -s '^n' 'nvim $(fzf)^M'
-# bindkey -s '^v' 'nvim\n'
+bindkey -s '^f' 'nvim $(fzf)^M'
+bindkey -s '^v' 'nvim\n'
 bindkey -s '^z' 'zi^M'
 bindkey '^[[P' delete-char
 bindkey "^p" up-line-or-beginning-search # Up
@@ -84,7 +85,7 @@ autoload edit-command-line; zle -N edit-command-line
 # Environment variables set everywhere
 export EDITOR="nvim"
 export TERMINAL="kitty"
-export BROWSER="brave"
+export BROWSER="firefox"
 
 # Uncomment the following line to use hyphen-insensitive completion. Case
 # sensitive completion must be off. _ and - will be interchangeable.
@@ -113,6 +114,11 @@ export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/.npm-global/bin:$PATH
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+export PYENV_ROOT="$HOME/.pyenv"
+command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+eval "$(pyenv init -)"
+
 # export MANPATH="/usr/local/man:$MANPATH"
 
 #source $ZSH/oh-my-zsh.sh
@@ -146,6 +152,7 @@ eval "$(rbenv init -)"
 
 bindkey '^ ' autosuggest-accept
 
+source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 zsh_add_theme "romkatv/powerlevel10k"
 
 # To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
