@@ -1,51 +1,59 @@
 #!/bin/bash
 
-##################################
-## ls, exa & more colored stuff ##
-##################################
+# --- Modern Replacements ---
 
-if which exa >/dev/null; then
-	# exa is a modern ls replacement with Git integration: https://the.exa.website
-  alias ls="exa --git-ignore"
-  alias ll="exa --git-ignore --git -l --group"
-  alias la="exa --git -la"
+# ls -> eza (Modern fork of exa)
+if command -v eza >/dev/null; then
+  alias ls="eza --icons --git"
+  alias ll="eza --icons --git -l --group"
+  alias la="eza --icons --git -la"
+  alias lt="eza --icons --tree --level=2" # Tree view
 else
-	alias ls="ls --color=always"
-	alias ll="ls -l"
-	alias la="ls -lA"
+  alias ls="ls --color=always"
+  alias ll="ls -l"
+  alias la="ls -lA"
 fi
-for alias in lsl sls lsls sl l s; do alias $alias=ls; done
 
+# cat -> bat (Syntax highlighting for cat)
+if command -v bat >/dev/null; then
+  alias cat="bat"
+fi
 
-###########################
-## Other helpful aliases ##
-###########################
+# grep -> ripgrep (rg) if available, else colorized grep
+if command -v rg >/dev/null; then
+  alias grep="rg"
+else
+  alias grep="grep --color=always"
+fi
 
-# To install ag -> https://github.com/ggreer/the_silver_searcher#linux
-# If ag is not installed, alias it to "grep -rn" (and generally force color for grep)
-alias grep="grep --color=always"
-#which rg >/dev/null || alias ag="grep -rn"
-
-# Provide a yq command to use jq with YAML files
-# alias yq="python3 -c 'import sys, yaml, json; json.dump(yaml.load(sys.stdin), sys.stdout, indent=4)' | jq"
-alias python=python3
-
-# A really simple password generator
-alias pw='bash -c '"'"'echo `tr -dc $([ $# -gt 1 ] && echo $2 || echo "A-Za-z0-9") < /dev/urandom | head -c $([ $# -gt 0 ] && echo $1 || echo 30)`'"'"' --'
-
-# Vim Aliases -- Use Neovim
+# --- Editors ---
 alias vim="nvim"
 alias vi="nvim"
-alias oldvim="vim"
+alias v="nvim"
 alias vimdiff='nvim -d'
-alias v=vim
 
-###########################
-## Other helpful aliases ##
-###########################
-alias txs='tmuxinator start'
-alias txo='tmuxinator open'
-alias txn='tmuxinator new'
-alias txl='tmuxinator list'
+# --- Workflow Shortcuts ---
+alias python=python3
 
-alias fd='fdfind'
+# Quick Edit Configs (Optional handy aliases)
+alias zshconfig="nvim $ZDOTDIR/.zshrc"
+alias aliasconfig="nvim $ZDOTDIR/zsh-aliases"
+
+# Use 'fdfind' as 'fd' if on Ubuntu/Debian
+command -v fdfind >/dev/null && alias fd='fdfind'
+
+# Chat with Copilot in place
+alias gc='gh copilot chat'
+# Ask a quick question (1-liner)
+#alias ga='gh copilot ask'
+# Generate commit message
+alias gcm='gh copilot generate commit-message'
+alias ghelp='gh copilot --help'
+alias '??'='gh copilot suggest -t shell'
+alias gem="xdg-open https://gemini.google.com/app"  # 'xdg-open' on Linux if 'open' doesn't work
+
+# 'wtf' to explain a command (Explain)
+alias 'wtf'='gh copilot explain'
+
+# Git specific suggestion
+alias 'git?'='gh copilot suggest -t git'

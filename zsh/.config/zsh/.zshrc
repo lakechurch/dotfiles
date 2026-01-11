@@ -1,159 +1,79 @@
 #!/bin/sh
 
+# --- Options ---
 HISTFILE=~/.zsh_history
-setopt appendhistory
-
-# some useful options (man zshoptions)
-setopt autocd extendedglob nomatch menucomplete
-setopt interactive_comments
-stty stop undef		# Disable ctrl-s to freeze terminal.
+setopt appendhistory autocd extendedglob nomatch menucomplete interactive_comments
+stty stop undef 
+#stty stop undef		# Disable ctrl-s to freeze terminal.
 zle_highlight=('paste:none')
-
-# beeping is annoying
 unsetopt BEEP
 
-# completions
+# --- Completion System (Optimized with Cache) ---
 autoload -Uz compinit
-zstyle ':completion:*' menu select
-# zstyle ':completion::complete:lsof:*' menu yes select
-zmodload zsh/complist
-# compinit
-_comp_options+=(globdots)		# Include hidden files.
+# Check if .zcompdump exists and is less than 24 hours old.
+# If so, skip the slow security checks.
+if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+  compinit
+else
+  compinit -C
+fi
 
+zstyle ':completion:*' menu select
+zmodload zsh/complist
+_comp_options+=(globdots)
+
+# --- Key Bindings (History Search) ---
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
+bindkey "^p" up-line-or-beginning-search 
+bindkey "^n" down-line-or-beginning-search
+bindkey "^k" up-line-or-beginning-search 
+bindkey "^j" down-line-or-beginning-search
 
-# Colors
-autoload -Uz colors && colors
-
-# Useful Functions
+# --- Load Configs ---
+# Source the manual plugin manager first
 source "$ZDOTDIR/zsh-functions"
-source <(curl -sL init.zshell.dev); zzinit
+source <(curl -sL init.zshell.dev); zzinit 
 
-# Normal files to source
+# Load exports (PATHs, Env Vars)
 zsh_add_file "zsh-exports"
-zsh_add_file "zsh-vim-mode"
 zsh_add_file "zsh-aliases"
-zsh_add_file "zsh-prompt"
+zsh_add_file "zsh-vim-mode"
+# Note: Removed "zsh-prompt" because you are using Starship.
 
-# Plugins
+# --- Plugins ---
 zsh_add_plugin "zsh-users/zsh-autosuggestions"
 zsh_add_plugin "zsh-users/zsh-syntax-highlighting"
 zsh_add_plugin "hlissner/zsh-autopair"
 zsh_add_plugin "unixorn/fzf-zsh-plugin"
 zsh_add_plugin "MichaelAquilina/zsh-you-should-use"
-# For more plugins: https://github.com/unixorn/awesome-zsh-plugins
-# More completions https://github.com/zsh-users/zsh-completions
 
-# Key-bindings
-bindkey -s '^o' 'ranger^M'
-bindkey -s '^g' 'zi^M'
-bindkey -s '^s' 'ncdu^M'
-bindkey -s '^f' 'nvim $(fzf)^M'
-bindkey -s '^v' 'nvim\n'
-bindkey -s '^z' 'zi^M'
+# --- Tool Initializations (The "Eval" Block) ---
+# Initialize these only if the commands exist to avoid errors
+command -v rbenv >/dev/null && eval "$(rbenv init -)"
+command -v pyenv >/dev/null && eval "$(pyenv init -)"
+command -v fnm   >/dev/null && eval "$(fnm env --use-on-cd)"
+command -v zoxide >/dev/null && eval "$(zoxide init zsh)"
+command -v atuin >/dev/null  && eval "$(atuin init zsh)"
+command -v starship >/dev/null && eval "$(starship init zsh)"
+
+# --- Custom Key Bindings ---
+bindkey -s '^o' 'y^M'          # Yazi
+bindkey -s '^g' 'zi^M'         # Zoxide interactive
+bindkey -s '^s' 'ncdu^M'       # Disk usage
+bindkey -s '^f' 'nvim $(fzf)^M' # Open file in nvim
+bindkey -s '^v' 'nvim\n'       # Open nvim
+# Your Todo list binding
+bindkey -s '^[t' 'nvim $TODO_LOG^M' 
+
+bindkey '^ ' autosuggest-accept
 bindkey '^[[P' delete-char
+
+
 bindkey "^p" up-line-or-beginning-search # Up
 bindkey "^n" down-line-or-beginning-search # Down
 bindkey "^k" up-line-or-beginning-search # Up
 bindkey "^j" down-line-or-beginning-search # Down
-bindkey -r "^u"
-bindkey -r "^d"
-# # Keybinding for Alt-T to open Neovim with TODO file
-bindkey -s '^[t' 'nvim ~/log/TODO.md^M'
-
-# FZF 
-[ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
-[ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
-[ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
-[ -f /usr/share/doc/fzf/examples/key-bindings.zsh ] && source /usr/share/doc/fzf/examples/key-bindings.zsh
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-[ -f $ZDOTDIR/completion/_fnm ] && fpath+="$ZDOTDIR/completion/"
-# export FZF_DEFAULT_COMMAND='rg --hidden -l ""'
-compinit
-
-# Edit line in vim with ctrl-e:
-autoload edit-command-line; zle -N edit-command-line
-# bindkey '^e' edit-command-line
-
-# Environment variables set everywhere
-export EDITOR="nvim"
-export TERMINAL="kitty"
-export BROWSER="firefox"
-
-# Uncomment the following line to use hyphen-insensitive completion. Case
-# sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-
-# User configuration
-export PATH=$HOME/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin:$PATH
-export PATH=$HOME/bin:/usr/local/bin:$PATH
-export PATH=$HOME/.local/bin:$PATH
-export PATH=$HOME/.npm-global/bin:$PATH
-export PATH="$HOME/.rbenv/bin:$PATH"
-export PATH="$HOME/.cargo/bin:$PATH"
-eval "$(rbenv init -)"
-eval "$(zoxide init zsh)"
-
-export PYENV_ROOT="$HOME/.pyenv"
-command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-eval "$(pyenv init -)"
-
-# fnm
-export PATH="/home/curtis/.local/share/fnm:$PATH"
-eval "$(fnm env --use-on-cd)"
-
-export PATH="/home/curtis/workspace/coursera/linux-system-programming-introduction-to-buildroot/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/:$PATH"
-# export MANPATH="/usr/local/man:$MANPATH"
-
-#source $ZSH/oh-my-zsh.sh
-
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# ssh
-# export SSH_KEY_PATH="~/.ssh/dsa_id"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
-
-#source $HOME/.aliases
-
-bindkey '^ ' autosuggest-accept
-eval "$(starship init zsh)"
-export NVIM_APPNAME=lazyvim
