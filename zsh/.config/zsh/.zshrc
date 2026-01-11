@@ -54,7 +54,7 @@ zsh_add_plugin "MichaelAquilina/zsh-you-should-use"
 
 # Key-bindings
 bindkey -s '^o' 'ranger^M'
-# bindkey -s '^g' 'zi^M'
+bindkey -s '^g' 'zi^M'
 bindkey -s '^s' 'ncdu^M'
 bindkey -s '^f' 'nvim $(fzf)^M'
 bindkey -s '^v' 'nvim\n'
