@@ -38,3 +38,22 @@ function zsh_add_completion() {
 	completion_file="$(basename "${completion_file_path}")"
 	if [ "$2" = true ] && compinit "${completion_file:1}"
 }
+
+# gco: Fuzzy find git branches with preview and checkout
+# Usage: 'gco'
+gco() {
+  local branch
+
+  # List branches, exclude HEAD, and pipe to fzf-tmux for a popup window
+  branch=$(git branch --all --format='%(refname:short)' | \
+    grep -v HEAD | \
+    fzf-tmux -p 80% --reverse --border \
+    --preview 'git log -1 --color=always --format="%C(auto)%h%d %s %C(black)%C(bold)%cr"' \
+    --header 'Select Branch to Checkout')
+
+  # Checkout if a branch was selected
+  if [ -n "$branch" ]; then
+    # Remove 'origin/' prefix if checking out a remote branch for the first time
+    git checkout $(echo "$branch" | sed "s/origin\///")
+  fi
+}

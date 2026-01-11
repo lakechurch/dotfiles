@@ -40,3 +40,12 @@ alias oldvim="vim"
 alias vimdiff='nvim -d'
 alias v=vim
 
+###########################
+## Other helpful aliases ##
+###########################
+alias txs='tmuxinator start'
+alias txo='tmuxinator open'
+alias txn='tmuxinator new'
+alias txl='tmuxinator list'
+
+alias fd='fdfind'

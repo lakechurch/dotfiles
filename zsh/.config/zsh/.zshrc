@@ -26,10 +26,6 @@ zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
 
 
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 # Colors
 autoload -Uz colors && colors
 
@@ -66,9 +62,10 @@ bindkey "^k" up-line-or-beginning-search # Up
 bindkey "^j" down-line-or-beginning-search # Down
 bindkey -r "^u"
 bindkey -r "^d"
+# # Keybinding for Alt-T to open Neovim with TODO file
+bindkey -s '^[t' 'nvim ~/log/TODO.md^M'
 
 # FZF 
-# TODO update for mac
 [ -f /usr/share/fzf/completion.zsh ] && source /usr/share/fzf/completion.zsh
 [ -f /usr/share/fzf/key-bindings.zsh ] && source /usr/share/fzf/key-bindings.zsh
 [ -f /usr/share/doc/fzf/examples/completion.zsh ] && source /usr/share/doc/fzf/examples/completion.zsh
@@ -108,17 +105,24 @@ export BROWSER="firefox"
 # Add wisely, as too many plugins slow down shell startup.
 
 # User configuration
-
+export PATH=$HOME/STMicroelectronics/STM32Cube/STM32CubeProgrammer/bin:$PATH
 export PATH=$HOME/bin:/usr/local/bin:$PATH
 export PATH=$HOME/.local/bin:$PATH
 export PATH=$HOME/.npm-global/bin:$PATH
 export PATH="$HOME/.rbenv/bin:$PATH"
+export PATH="$HOME/.cargo/bin:$PATH"
 eval "$(rbenv init -)"
+eval "$(zoxide init zsh)"
 
 export PYENV_ROOT="$HOME/.pyenv"
 command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
 eval "$(pyenv init -)"
 
+# fnm
+export PATH="/home/curtis/.local/share/fnm:$PATH"
+eval "$(fnm env --use-on-cd)"
+
+export PATH="/home/curtis/workspace/coursera/linux-system-programming-introduction-to-buildroot/gcc-arm-10.3-2021.07-x86_64-aarch64-none-linux-gnu/bin/:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 #source $ZSH/oh-my-zsh.sh
@@ -151,9 +155,5 @@ eval "$(pyenv init -)"
 #source $HOME/.aliases
 
 bindkey '^ ' autosuggest-accept
-
-source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
-zsh_add_theme "romkatv/powerlevel10k"
-
-# To customize prompt, run `p10k configure` or edit ~/.config/zsh/.p10k.zsh.
-[[ ! -f ~/.config/zsh/.p10k.zsh ]] || source ~/.config/zsh/.p10k.zsh
+eval "$(starship init zsh)"
+export NVIM_APPNAME=lazyvim
